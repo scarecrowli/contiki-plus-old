@@ -88,7 +88,7 @@ volatile unsigned long seconds;
 long sleepseconds;
 
 /* Set RADIOSTATS to monitor radio on time (must also be set in the radio driver) */
-#if RF230BB && AVR_WEBSERVER
+#if RF2XXBB && (AVR_WEBSERVER || MX_WEBSERVER)
 #define RADIOSTATS 1
 #endif
 
@@ -104,7 +104,7 @@ extern uint8_t RF230_receive_on;
  * Actual calibration is done by the driver on the next transmit request.
  */
 #if RADIO_CONF_CALIBRATE_INTERVAL
-extern volatile uint8_t rf230_calibrate;
+extern volatile uint8_t rf2xx_calibrate;
 static uint8_t calibrate_interval;
 #endif
 
@@ -337,7 +337,7 @@ ISR(AVR_OUTPUT_COMPARE_INT)
 #if RADIO_CONF_CALIBRATE_INTERVAL
    /* Force a radio PLL frequency calibration every 256 seconds */
     if (++calibrate_interval==0) {
-      rf230_calibrate=1;
+      rf2xx_calibrate=1;
     }
 #endif
 
