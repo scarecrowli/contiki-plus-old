@@ -96,7 +96,8 @@
    * pre-scale factor is 8, we want CLOCK_CONF_SECOND ticks / sec: \
    * 32768 = 8 * CLOCK_CONF_SECOND * OCR2A, less 1 for CTC mode\
    */ \
-  OCR2A = 32768/8/CLOCK_CONF_SECOND - 1; \
+  /*OCR2A = 32768/8/CLOCK_CONF_SECOND - 1;*/ \
+  OCR2A = 32768/32/CLOCK_CONF_SECOND - 1; \
 \
   /* 								\
    * Set timer control register: 	\
