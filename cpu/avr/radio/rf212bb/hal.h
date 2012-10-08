@@ -82,6 +82,7 @@
 #define ZIGBIT			4
 #define IRIS			5
 #define ATMEGA128RFA1   6
+#define MXUSB           100
 #define MX2XXCB			101
 #define MX2XXCC			102
 
@@ -148,7 +149,7 @@
 #   define HAS_CW_MODE
 #   define HAS_SPARE_TIMER
 
-#elif PLATFORM_TYPE == RAVENUSB_C
+#elif PLATFORM_TYPE == RAVENUSB_C || PLATFORM_TYPE == MXUSB
 /* 1287USB raven */
 #   define SSPORT     B
 #   define SSPIN      (0x00)
