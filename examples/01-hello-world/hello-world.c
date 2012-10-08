@@ -9,7 +9,7 @@
 * \file
 *         A very simple Contiki application showing how Contiki programs look.
 * \author
-*         Smeshlink
+*         SmeshLink
 */
 
 #include "contiki.h"
