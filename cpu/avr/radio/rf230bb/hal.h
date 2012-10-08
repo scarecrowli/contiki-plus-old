@@ -82,6 +82,8 @@
 #define ZIGBIT			4
 #define IRIS			5
 #define ATMEGA128RFA1   6
+#define MX2XXCB			101
+#define MX2XXCC			102
 
 #if PLATFORM_TYPE == RCB_B
 /* 1281 rcb */
@@ -124,7 +126,7 @@
 //#   define HAS_SPARE_TIMER // Not used
 
 
-#elif PLATFORM_TYPE == RAVEN_D
+#elif PLATFORM_TYPE == RAVEN_D || PLATFORM_TYPE == MX2XXCC
 /* 1284 raven */
 #   define SSPORT     B
 #   define SSPIN      (0x04)
@@ -196,7 +198,7 @@
 #   define SLPTRPIN   7
 #   define HAS_SPARE_TIMER
 
-#elif PLATFORM_TYPE == IRIS
+#elif PLATFORM_TYPE == IRIS || PLATFORM_TYPE == MX2XXCB
 /* 1281 IRIS */
 #   define SSPORT     B
 #   define SSPIN      (0x00)
