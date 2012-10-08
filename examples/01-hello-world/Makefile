@@ -1,13 +1,12 @@
 CONTIKI_PROJECT = hello-world
 all: $(CONTIKI_PROJECT)
 
-# Consider to move the above line to the platform's Makefile.
+# IPv6
 UIP_CONF_IPV6 = 1
-WITH_UIP6 = 1
-
-
-
 # RPL
-CFLAGS+= -DUIP_CONF_IPV6_RPL
+UIP_CONF_RPL = 1
+# Last byte of address
+ADDR = 0x33
+
 CONTIKI = ../..
 include $(CONTIKI)/Makefile.include
