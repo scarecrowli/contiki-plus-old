@@ -1,0 +1,48 @@
+CONTIKI_TARGET_DIRS = . dev apps 
+CONTIKI_CORE=contiki-mx2xxcc-main
+CONTIKI_TARGET_MAIN = ${CONTIKI_CORE}.o
+
+CONTIKI_TARGET_SOURCEFILES += contiki-mx2xxcc-main.c params.c ds2401.c \
+							leds-arch.c node-id.c interrupt-arch.c \
+							slip_uart0.c slip.c \
+							sht11.c sht11-sensor.c adc.c adc-sensors.c 
+
+CONTIKIAVR=$(CONTIKI)/cpu/avr
+CONTIKIBOARD=.
+
+CONTIKI_PLAT_DEFS = -DF_CPU=8000000UL -DAUTO_CRC_PADDING=2
+
+MCU=atmega1284p
+RF230BB=1
+#RF212BB=1
+AVRDUDE_PROGRAMMER=jtag2
+
+# For usb devices, you may either use PORT=usb, or (e.g. if you have more than one
+# programmer connected) you can use the following trick to find out the serial number:
+#
+# The example is for an JTAGICE mkII used to program an ATmega128:
+# avrdude -v -P usb:xxxx -c jtag2 -p atmega128
+AVRDUDE_PORT=usb:00B000000D79
+
+
+# Additional avrdude options
+# Verify off
+AVRDUDE_OPTIONS=-V
+
+# pass ADDR=0x## to make to configure the last byte of the address which will be stored in EEPROM
+ifdef ADDR
+CFLAGS += -DMX_ADDRESS_LAST_BYTE=$(ADDR)
+endif
+
+ifdef UIP_CONF_IPV6
+CFLAGS += -DWITH_UIP6=1
+endif
+
+ifneq ($(UIP_CONF_RPL),0)
+CFLAGS+= -DUIP_CONF_IPV6_RPL=1
+else
+CFLAGS+= -DUIP_CONF_IPV6_RPL=0
+endif
+
+include $(CONTIKIAVR)/Makefile.avr
+include $(CONTIKIAVR)/radio/Makefile.radio
