@@ -57,6 +57,7 @@
 #define rf2xx_set_promiscuous_mode(value) rf212_set_promiscuous_mode(value)
 
 #define rf2xx_calibrate rf212_calibrate
+#define RF2xx_receive_on RF212_receive_on
 #define rf2xx_listen_channel rf212_listen_channel
 #define rf2xx_get_channel rf212_get_channel
 #define rf2xx_set_channel rf212_set_channel
@@ -93,6 +94,7 @@
 #define rf2xx_set_promiscuous_mode(value) rf230_set_promiscuous_mode(value)
 
 #define rf2xx_calibrate rf230_calibrate
+#define RF2xx_receive_on RF230_receive_on
 #define rf2xx_listen_channel rf230_listen_channel
 #define rf2xx_get_channel rf230_get_channel
 #define rf2xx_set_channel rf230_set_channel

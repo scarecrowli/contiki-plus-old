@@ -95,7 +95,7 @@ long sleepseconds;
 #if RADIOSTATS
 static volatile uint8_t rcount;
 volatile unsigned long radioontime;
-extern uint8_t RF230_receive_on;
+extern uint8_t RF2xx_receive_on;
 #endif
 
 /* Set RADIO_CONF_CALIBRATE_INTERVAL for periodic calibration of the PLL during extended radio on time.
