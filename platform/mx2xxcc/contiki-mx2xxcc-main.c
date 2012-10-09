@@ -361,7 +361,7 @@ init_net(void)
 
   process_start(&tcpip_process, NULL);
 
-#if ANNOUNCE_BOOT
+#if ANNOUNCE_BOOT && UIP_CONF_IPV6
   PRINTA("Tentative link-local IPv6 address ");
   {
     uip_ds6_addr_t *lladdr;
