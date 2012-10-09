@@ -1,8 +1,11 @@
 ### The RF230 "bare bones" driver uses the core MAC layer.
 ### It is required for versions after contiki 2.4 that use the new driver interfaces
 
+ifndef RF230BB
+RF230BB=1
+endif
 
-### Define RF230BB in the base makefile, or use $make RF230BB=1 ...
+### Define RF230BB/RF212BB in the base makefile, or use $make RF230BB=1/RF212BB=1 ...
 ifeq ($(RF212BB),1)
   CFLAGS                     += -DRF212BB=1
   #Source for AT86RF212 barebones driver using the contiki core MAC
