@@ -99,7 +99,7 @@ unsigned char debugflowsize,debugflow[DEBUGFLOWSIZE];
 #include "dev/ds2401.h"
 #include "node-id.h"
 
-#if MX_WEBSERVER
+#if AVR_WEBSERVER
 #include "httpd-fs.h"
 #include "httpd-cgi.h"
 #endif
@@ -560,7 +560,7 @@ uint8_t i;
 /*--------------------------Announce the configuration---------------------*/
 #if ANNOUNCE_BOOT
 {
-#if MX_WEBSERVER
+#if AVR_WEBSERVER
   uint8_t i;
   char buf1[40],buf[40];
   unsigned int size;
@@ -593,7 +593,7 @@ uint8_t i;
 
 #else
    PRINTA("Online\n");
-#endif /* MX_WEBSERVER */
+#endif /* AVR_WEBSERVER */
 
 #endif /* ANNOUNCE_BOOT */
 }

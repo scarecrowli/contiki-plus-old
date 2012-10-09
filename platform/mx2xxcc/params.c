@@ -44,7 +44,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#if MX_WEBSERVER
+#if AVR_WEBSERVER
 //#include "httpd-fs.h"
 //#include "httpd-cgi.h"
 #endif
@@ -73,7 +73,7 @@ generate_new_eui64(uint8_t eui64[8]) {
 }
 #endif
 
-#if MX_WEBSERVER
+#if AVR_WEBSERVER
 /* Webserver builds can set these in httpd-fsdata.c via makefsdata.h */
 extern uint8_t default_mac_address[8];
 extern uint8_t default_server_name[16];
@@ -105,11 +105,11 @@ params_get_eui64(uint8_t *eui64) {
  * If corrupt all values will be rewritten with the default flash values.
  * To make this work, get the channel before anything else.
  */
-#if !MX_WEBSERVER
+#if !AVR_WEBSERVER
 uint8_t eemem_mac_address[] EEMEM = PARAMS_EUI64ADDR;
 uint8_t eemem_server_name[] EEMEM = PARAMS_SERVERNAME;
 uint8_t eemem_domain_name[] EEMEM = PARAMS_DOMAINNAME;
-#endif /* MX_WEBSERVER */
+#endif /* AVR_WEBSERVER */
 
 uint16_t eemem_nodeid EEMEM = PARAMS_NODEID;
 uint8_t eemem_channel[2] EEMEM = {PARAMS_CHANNEL, ~PARAMS_CHANNEL};

@@ -42,7 +42,7 @@
 #define settings_add_uint16(...) 0
 #endif
 
-#if MX_WEBSERVER
+#if AVR_WEBSERVER
 /* Webserver builds can set some defaults in httpd-fsdata.c via makefsdata.h */
 extern uint8_t eemem_mac_address[8];
 extern uint8_t eemem_server_name[16];
