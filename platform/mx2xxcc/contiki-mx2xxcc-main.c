@@ -793,3 +793,8 @@ extern uint8_t rf230_interrupt_flag;
 }
 
 /*---------------------------------------------------------------------------*/
+void
+log_message(char *m1, char *m2)
+{
+  PRINTF("%s%s\n", m1, m2);
+}

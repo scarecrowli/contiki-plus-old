@@ -237,7 +237,7 @@ scmd(unsigned cmd)
   sreset();
   /* Start transmission */
   if(!swrite(cmd)) {
-	  printf("-2");
+	  //printf("-2");
 	  goto fail;
   }
 
@@ -247,8 +247,8 @@ scmd(unsigned cmd)
       t0 = sread(1);
       t1 = sread(1);
       rcrc = sread(0);
-      printf("t0:%d",t0);
-      printf("t1:%d",t1);
+      //printf("t0:%d",t0);
+      //printf("t1:%d",t1);
 #ifdef CRC_CHECK
       {
 	unsigned crc;
@@ -256,7 +256,7 @@ scmd(unsigned cmd)
 	crc = crc8_add(crc, t0);
 	crc = crc8_add(crc, t1);
 	if(crc != rev8bits(rcrc)) {
-		 printf("-3");
+		 //printf("-3");
 		goto fail;
 	}
       }
@@ -267,7 +267,7 @@ scmd(unsigned cmd)
 
  fail:
   sreset();
-  printf("-1");
+  //printf("-1");
   return -1;
 }
 /*---------------------------------------------------------------------------*/
