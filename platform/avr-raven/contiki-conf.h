@@ -43,6 +43,8 @@
 #ifndef __CONTIKI_CONF_H__
 #define __CONTIKI_CONF_H__
 
+#include "radio/rf2xxbb-conf.h"
+
 /* Platform name, type, and MCU clock rate */
 #define PLATFORM_NAME  "Raven"
 #define PLATFORM_TYPE  RAVEN_D
