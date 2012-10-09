@@ -43,5 +43,7 @@ else
 CFLAGS+= -DUIP_CONF_IPV6_RPL=0
 endif
 
+CLEAN += symbols.c symbols.h *.$(TARGET)
+
 include $(CONTIKIAVR)/Makefile.avr
 include $(CONTIKIAVR)/radio/Makefile.radio
