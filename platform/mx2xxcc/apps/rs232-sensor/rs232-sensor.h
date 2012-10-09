@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, SmeshLink Technology Ltd.
+ * Copyright (c) 2011-2012 SmeshLink Technology Corporation.
  * All rights reserved.
  *
  * $Id: rs232-sensor.h $
