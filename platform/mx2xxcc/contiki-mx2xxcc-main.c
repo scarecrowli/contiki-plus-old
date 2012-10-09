@@ -204,6 +204,7 @@ buzz_id()
 {
   delayms(300);
 #if UIP_CONF_EUI64
+  extern uint8_t eemem_mac_address[8];
   buzzer_nodeid(eemem_mac_address[7]);
 #else
   buzzer_nodeid(ds2401_id[7]);
