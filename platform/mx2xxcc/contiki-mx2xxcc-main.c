@@ -118,21 +118,7 @@ unsigned char debugflowsize,debugflow[DEBUGFLOWSIZE];
 #include "camera.h"
 #endif
 
-#ifdef BUZZER
-#include "buzzerid.h"
-void
-buzz_id()
-{
-  delayms(300);
-#ifdef MX_ADDRESS_LAST_BYTE
-  buzzer_nodeid(MX_ADDRESS_LAST_BYTE);
-#endif
-}
-#endif
-
 #include "net/rime.h"
-
-#include "params.h"
 
 /* Get periodic prints from idle loop, from clock seconds or rtimer interrupts */
 /* Use of rtimer will conflict with other rtimer interrupts such as contikimac radio cycling */
@@ -207,6 +193,24 @@ init_usart(void)
 #ifndef UIP_CONF_EUI64
 #define UIP_CONF_EUI64 1
 #endif
+#if UIP_CONF_EUI64
+#include "params.h"
+#endif
+
+#ifdef BUZZER
+#include "buzzerid.h"
+void
+buzz_id()
+{
+  delayms(300);
+#if UIP_CONF_EUI64
+  buzzer_nodeid(eemem_mac_address[7]);
+#else
+  buzzer_nodeid(ds2401_id[7]);
+#endif
+}
+#endif
+
 static void
 set_rime_addr(void)
 {

@@ -29,9 +29,8 @@ AVRDUDE_PORT=usb:00B000000D79
 # Verify off
 AVRDUDE_OPTIONS=-V
 
-# pass ADDR=0x## to make to configure the last byte of the address which will be stored in EEPROM
-ifdef ADDR
-CFLAGS += -DMX_ADDRESS_LAST_BYTE=$(ADDR)
+ifdef UIP_CONF_EUI64
+CFLAGS += -DUIP_CONF_EUI64=$(UIP_CONF_EUI64)
 endif
 
 ifdef UIP_CONF_IPV6
