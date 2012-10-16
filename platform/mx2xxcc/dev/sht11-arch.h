@@ -40,17 +40,25 @@
 #ifndef SHT11_ARCH_H
 #define SHT11_ARCH_H
 
-#define SHT11_ARCH_SDA	PORTD3	/* P1.5 */
-//#define SHT11_ARCH_SCL	PORTC4	/* P1.6 */
-#define SHT11_ARCH_SCL  PORTD2  /* P1.6 */
-#define SHT11_ARCH_PWR	PORTC5	/* P1.7 */
+#define SHT11_ARCH_SDA	PORTD3	/* PE7 */
+#define SHT11_ARCH_SCL	PORTC4	/* PC3 */
+#define SHT11_ARCH_PWR	PORTC5	/* PC0 */
 
-#define	SHT11_PxDIRC	DDRC
-#define SHT11_PxINC		PINC
-#define SHT11_PxOUTC	PORTC
-#define	SHT11_PxDIRD	DDRD
-#define SHT11_PxIND		PIND
-#define SHT11_PxOUTD	PORTD
-//#define SHT11_PxSEL	P1SEL
+
+
+
+#define	SHT11_PxDIRSDA	DDRD
+#define SHT11_PxINSDA	PIND
+#define SHT11_PxOUTSDA	PORTD
+
+#define	SHT11_PxDIRSCL	DDRC
+#define SHT11_PxINSCL	PINC
+#define SHT11_PxOUTSCL	PORTC
+
+#define	SHT11_PxDIRPWR	DDRC
+#define SHT11_PxINPWR	PINC
+#define SHT11_PxOUTPWR	PORTC
+
+
 
 #endif
