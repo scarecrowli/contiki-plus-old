@@ -182,8 +182,8 @@ PROCESS_THREAD(border_router_process, ev, data)
 
 #else
     uip_ip6addr_t ipaddr;
-    uip_ip6addr(&ipaddr, 0xaaaa, 0, 0, 0, 0, 0, 0, 0x200);
-    //uip_ip6addr(&ipaddr, 0x2001, 2, 0, 0, 0, 0, 0, 0x200);
+    //uip_ip6addr(&ipaddr, 0xaaaa, 0, 0, 0, 0, 0, 0, 0x200);
+    uip_ip6addr(&ipaddr, 0x2001, 2, 0, 0, 0, 0, 0, 0x200);
     uip_ds6_addr_add(&ipaddr, 0, ADDR_MANUAL);
     rpl_set_prefix(dag, &ipaddr, 64);
 #endif

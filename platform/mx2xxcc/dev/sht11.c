@@ -41,16 +41,16 @@
 #include <dev/sht11.h>
 #include "sht11-arch.h"
 
-#define SDA_1()   (SHT11_PxOUTD |=  _BV(SHT11_ARCH_SDA))	/* SDA Output=1 */
-#define SDA_0()   (SHT11_PxOUTD &= ~_BV(SHT11_ARCH_SDA))	/* SDA Output=0 */
-#define SDA_IS_1  (SHT11_PxIND & _BV(SHT11_ARCH_SDA))
-#define SDA_OUT() (SHT11_PxDIRD |= _BV(SHT11_ARCH_SDA))
-#define SDA_IN()  (SHT11_PxDIRD &= ~_BV(SHT11_ARCH_SDA))
+#define SDA_1()   (SHT11_PxOUTSDA |=  _BV(SHT11_ARCH_SDA))	/* SDA Output=1 */
+#define SDA_0()   (SHT11_PxOUTSDA &= ~_BV(SHT11_ARCH_SDA))	/* SDA Output=0 */
+#define SDA_IS_1  (SHT11_PxINSDA & _BV(SHT11_ARCH_SDA))
+#define SDA_OUT() (SHT11_PxDIRSDA |= _BV(SHT11_ARCH_SDA))
+#define SDA_IN()  (SHT11_PxDIRSDA &= ~_BV(SHT11_ARCH_SDA))
 
 
-#define SCL_0()   (SHT11_PxOUTC &= ~_BV(SHT11_ARCH_SCL))	/* SCL Output=0 */
-#define SCL_1()   (SHT11_PxOUTC |=  _BV(SHT11_ARCH_SCL))	/* SCL Output=1 */
-#define SCL_OUT() (SHT11_PxDIRC |= _BV(SHT11_ARCH_SCL))
+#define SCL_0()   (SHT11_PxOUTSCL &= ~_BV(SHT11_ARCH_SCL))	/* SCL Output=0 */
+#define SCL_1()   (SHT11_PxOUTSCL |=  _BV(SHT11_ARCH_SCL))	/* SCL Output=1 */
+#define SCL_OUT() (SHT11_PxDIRSCL |= _BV(SHT11_ARCH_SCL))
 
 				/* adr   command  r/w */
 #define  STATUS_REG_W   0x06	/* 000    0011    0 */
@@ -207,7 +207,10 @@ sht11_init(void)
    * SDA 0: Output=0
    *     1: Input and pull-up (Output=0)
    */
-  SHT11_PxOUTC |= _BV(SHT11_ARCH_PWR);
+
+
+  SHT11_PxDIRPWR|= _BV(SHT11_ARCH_PWR);
+  SHT11_PxOUTPWR |= _BV(SHT11_ARCH_PWR);
   SDA_OUT();
   SCL_OUT();
 }
@@ -218,7 +221,7 @@ sht11_init(void)
 void
 sht11_off(void)
 {
-  SHT11_PxOUTC &= ~_BV(SHT11_ARCH_PWR);
+  SHT11_PxOUTPWR &= ~_BV(SHT11_ARCH_PWR);
   SDA_IN();
 }
 /*---------------------------------------------------------------------------*/
@@ -233,6 +236,8 @@ scmd(unsigned cmd)
   if(cmd != MEASURE_HUMI && cmd != MEASURE_TEMP) {
     return -1;
   }
+  MCUCR |= (1<<JTD);
+  		MCUCR |= (1<<JTD);
 
   sreset();
   /* Start transmission */
@@ -256,11 +261,14 @@ scmd(unsigned cmd)
 	crc = crc8_add(crc, t0);
 	crc = crc8_add(crc, t1);
 	if(crc != rev8bits(rcrc)) {
-		 //printf("-3");
+		// printf("-3");
 		goto fail;
 	}
       }
 #endif
+      MCUCR &= (0<<JTD);
+        MCUCR &= (0<<JTD);
+
       return (t0 << 8) | t1;
     }
   }
@@ -268,6 +276,9 @@ scmd(unsigned cmd)
  fail:
   sreset();
   //printf("-1");
+  MCUCR &= (0<<JTD);
+  MCUCR &= (0<<JTD);
+
   return -1;
 }
 /*---------------------------------------------------------------------------*/
@@ -278,6 +289,7 @@ unsigned int
 sht11_temp(void)
 {
 	return scmd(MEASURE_TEMP);
+
 }
 /*---------------------------------------------------------------------------*/
 /*

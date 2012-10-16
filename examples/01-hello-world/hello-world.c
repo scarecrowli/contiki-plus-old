@@ -60,10 +60,12 @@ PROCESS_THREAD(leds_blink_process, ev, data)
   PROCESS_BEGIN();
 
   leds_on(LEDS_RED);
+  leds_on(LEDS_ALL);
+
 
   while(1) {
     /* Set the etimer every time. */
-    etimer_set(&timer, CLOCK_CONF_SECOND*4);
+    etimer_set(&timer, CLOCK_CONF_SECOND);
     /* And wait until the specific event. */
     PROCESS_WAIT_EVENT_UNTIL(ev == PROCESS_EVENT_TIMER);
 
