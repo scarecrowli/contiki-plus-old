@@ -65,6 +65,106 @@ voltage_periodic_handler(resource_t *r)
   REST.notify_subscribers(r, obs_counter, notification);
 }
 
+/*---------------------------------------------------------------------------*/
+RESOURCE(take, METHOD_GET | METHOD_POST, "take", "take");
+/*
+ * Take a picture.
+ */
+void
+take_handler(void* request, void* response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
+{
+  const char *temp;
+  char buf[64] = "";
+  camera_size_t camera_size = CAMERA_SIZE_1;
+  uint16_t count;
+  uint32_t size;
+
+  /* Determine the size of picture. 1 for the smallest and 3 for the largest. */
+  if (!REST.get_query_variable(request, "size", &temp)) {
+    REST.get_post_variable(request, "size", &temp);
+  }
+
+  if (temp) {
+    camera_size = camera_parse_size(temp[0]);
+  }
+
+  camera_take_picture(camera_size, DEFAULT_CAMERA_PACKET_SIZE, &size, &count);
+  sprintf(buf, "{'t':'OK','s':%lu,'n':%u}", size, count);
+
+  REST.set_header_content_type(response, TEXT_PLAIN);
+  REST.set_response_payload(response, buf, strlen(buf));
+}
+
+RESOURCE(size, METHOD_GET, "size", "size");
+/*
+ * Get the size of the taken picture.
+ */
+void
+size_handler(void* request, void* response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
+{
+  char temp[16] = "";
+
+  uint32_t size = camera_get_picture_size();
+  sprintf(temp, "%lu", size);
+
+  REST.set_header_content_type(response, TEXT_PLAIN);
+  REST.set_response_payload(response, temp, strlen(temp));
+}
+
+RESOURCE(count, METHOD_GET, "count", "count");
+/*
+ * Get the total count of the picture's packets.
+ */
+void
+count_handler(void* request, void* response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
+{
+  char temp[8] = "";
+
+  uint16_t count = camera_get_packet_count();
+  sprintf(temp, "%u", count);
+
+  REST.set_header_content_type(response, TEXT_PLAIN);
+  REST.set_response_payload(response, temp, strlen(temp));
+}
+
+RESOURCE(packet, METHOD_GET | METHOD_PUT | METHOD_POST, "packet", "packet");
+/*
+ * Get one packet of the picture.
+ */
+void
+packet_handler(void* request, void* response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
+{
+  const char *temp;
+  char buf[1024];
+  int no = 0, len = 0, tries = 0;
+
+  /* Get the index of the specified packet. */
+  len = REST.get_query_variable(request, "no", &temp);
+  if (!len) {
+    len = REST.get_post_variable(request, "no", &temp);
+  }
+  memcpy(buf, temp, len);
+  buf[len] = '\0';
+  no = atoi(buf);
+
+  /* Get count of tries. Unused right now. */
+  len = REST.get_query_variable(request, "try", &temp);
+  if (!len) {
+    len = REST.get_post_variable(request, "try", &temp);
+  }
+  if (len) {
+    memcpy(buf, temp, len);
+    buf[len] = '\0';
+    tries = atoi(buf);
+  }
+  if (tries <= 0) {
+    tries = 10;
+  }
+  len = camera_try_get_packet(no, buf, tries);
+  REST.set_response_payload(response, buf, len);
+  REST.set_header_content_type(response, TEXT_PLAIN);
+}
+
 RESOURCE(camera, METHOD_GET | METHOD_POST, "camera", "camera");
 void
 camera_handler(void* request, void* response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
@@ -72,8 +172,8 @@ camera_handler(void* request, void* response, uint8_t *buffer, uint16_t preferre
   const char *temp;
   uint8_t buff[1024];
   camera_size_t camera_size = CAMERA_SIZE_1;
-  u16_t count;
-  u32_t size;
+  uint16_t count;
+  uint32_t size;
   int index = 0, len = 0, tries = 10;
 
   if (0 == *offset) {
@@ -85,7 +185,7 @@ camera_handler(void* request, void* response, uint8_t *buffer, uint16_t preferre
       camera_size = camera_parse_size(temp[0]);
     }
     leds_toggle(LEDS_GREEN);
-    camera_take_picture(camera_size, preferred_size, &size, &count);
+    camera_take_picture(camera_size, DEFAULT_CAMERA_PACKET_SIZE, &size, &count);
   }
 
   index = *offset / preferred_size + 1;
