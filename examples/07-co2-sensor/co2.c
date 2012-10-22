@@ -7,7 +7,7 @@
 
 /**
  * \file
- *         A custom CO2 sensor using RS232.
+ *         GE T6613 CO2 sensor using uart0.
  * \author
  *         SmeshLink
  */
@@ -16,13 +16,13 @@
 
 #define MAX_DELAY 1000000
 
-static char read_co2_cmd[9] =  {0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
+static char read_co2_cmd[5] =  {0xFF,0xFE,0x02,0x02,0x03};
 
 void
 co2_init()
 {
-  rs232_sensor_init(RS232_PORT_0, USART_BAUD_9600, USART_PARITY_NONE | USART_STOP_BITS_1 | USART_DATA_BITS_8);
-  rs232_sensor_set_frame_length(9);
+  rs232_sensor_init(RS232_PORT_0, USART_BAUD_19200, USART_PARITY_NONE | USART_STOP_BITS_1 | USART_DATA_BITS_8);
+  rs232_sensor_set_frame_length(5);
 }
 
 uint16_t
@@ -38,10 +38,10 @@ co2_get()
 
   }
 
-  co2 |= rs232_frame.frame[2];
-  co2 = co2 << 8;
-  co2 |= rs232_frame.frame[3];
-
+  //co2 |= rs232_frame.frame[3];
+  //co2 = co2 << 8;
+  //co2 |= rs232_frame.frame[4];
+  co2 = rs232_frame.frame[3]*256+rs232_frame.frame[4];
   return co2;
 }
 

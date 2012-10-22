@@ -234,6 +234,7 @@ ds2401_init()
       ds2401_id[0] = 0x00;
       ds2401_id[1] = 0x1A;
       ds2401_id[2] = 0x4C;
+      OW_DRIVE();
       return 1;	/* Success! */
     }
   } else {
@@ -242,6 +243,7 @@ ds2401_init()
 
 fail:
   memset(ds2401_id, 0x0, sizeof(ds2401_id));
+  OW_DRIVE();
   return 0;  /* Fail! */
 }
 /*---------------------------------------------------------------------------*/

@@ -102,7 +102,7 @@ RESOURCE(size, METHOD_GET, "size", "size");
 void
 size_handler(void* request, void* response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
-  char temp[16] = "";
+  char temp[64] = "";
 
   uint32_t size = camera_get_picture_size();
   sprintf(temp, "%lu", size);
@@ -118,7 +118,7 @@ RESOURCE(count, METHOD_GET, "count", "count");
 void
 count_handler(void* request, void* response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
-  char temp[8] = "";
+  char temp[64] = "";
 
   uint16_t count = camera_get_packet_count();
   sprintf(temp, "%u", count);
@@ -185,7 +185,7 @@ camera_handler(void* request, void* response, uint8_t *buffer, uint16_t preferre
       camera_size = camera_parse_size(temp[0]);
     }
     leds_toggle(LEDS_GREEN);
-    camera_take_picture(camera_size, DEFAULT_CAMERA_PACKET_SIZE, &size, &count);
+    camera_take_picture(camera_size, preferred_size, &size, &count);
   }
 
   index = *offset / preferred_size + 1;
@@ -209,6 +209,10 @@ PROCESS_THREAD(coap_sample, ev, data)
 
   /* Activate the application-specific resources. */
   rest_activate_resource(&resource_camera);
+   rest_activate_resource(&resource_take);
+   rest_activate_resource(&resource_size);
+   rest_activate_resource(&resource_count);
+   rest_activate_resource(&resource_packet);
 
   rest_activate_periodic_resource(&periodic_resource_voltage);
 

@@ -182,11 +182,14 @@ init_usart(void)
   /* First rs232 port for debugging */
   rs232_init(RS232_PORT_0, USART_BAUD_38400,
       USART_PARITY_NONE | USART_STOP_BITS_1 | USART_DATA_BITS_8);
-#if WITH_UIP || WITH_UIP6
-  slip_arch_init(USART_BAUD_38400);
-#else
-  rs232_redirect_stdout(RS232_PORT_0);
-#endif /* WITH_UIP */
+  rs232_init(RS232_PORT_1, USART_BAUD_38400,
+      USART_PARITY_NONE | USART_STOP_BITS_1 | USART_DATA_BITS_8);
+
+//#if WITH_UIP || WITH_UIP6
+//  slip_arch_init(USART_BAUD_38400);
+//#else
+  rs232_redirect_stdout(RS232_PORT_1);
+//#endif /* WITH_UIP */
 }
 
 /*-------------------------Initialize net------------------------*/
