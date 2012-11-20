@@ -1628,7 +1628,7 @@ rf230_cca(void)
 //  if (hal_register_read(RG_PHY_ED_LEVEL)<(91-77)) cca=0xff;
     while (rf230_ccawait) {}
 #ifdef RF230_CONF_CCA_THRES
-    if (hal_register_read(RG_PHY_ED_LEVEL)<(91+RF230_CONF_CCA_THRES) cca=0xff;
+    if (hal_register_read(RG_PHY_ED_LEVEL)<(91+RF230_CONF_CCA_THRES)) cca=0xff;
 #else
     if (hal_register_read(RG_PHY_ED_LEVEL)<(91-77)) cca=0xff;
 #endif

@@ -202,7 +202,7 @@ static unsigned long total_time_for_transmission, total_transmission_len;
 static int num_transmissions;
 #endif
 
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
 volatile uint8_t rf212_interruptwait,rf212_ccawait;
 #endif
 
@@ -524,7 +524,7 @@ on(void)
 #if RF212BB_CONF_LEDONPORTE1
     PORTE|=(1<<PE1); //ledon
 #endif
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
 /* Use the poweron interrupt for delay */
     rf212_interruptwait=1;
     sei();
@@ -867,7 +867,7 @@ rf212_transmit(unsigned short payload_len)
   /* If radio is sleeping we have to turn it on first */
   /* This automatically does the PLL calibrations */
   if (hal_get_slptr()) {
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
 	ENERGEST_ON(ENERGEST_TYPE_LED_RED);
 #if RF212BB_CONF_LEDONPORTE1
     PORTE|=(1<<PE1); //ledon
@@ -933,7 +933,7 @@ rf212_transmit(unsigned short payload_len)
 
   ENERGEST_ON(ENERGEST_TYPE_TRANSMIT);
   
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
 /* No interrupts across frame download! */
   cli();
 /* slow down the transmit? */
@@ -943,7 +943,7 @@ rf212_transmit(unsigned short payload_len)
   hal_set_slptr_high();
   hal_set_slptr_low();
   hal_frame_write(buffer, total_len);
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
  sei();
 #endif
   PRINTF("rf212_transmit: %d\n", (int)total_len);
@@ -1627,7 +1627,7 @@ rf212_cca(void)
 
   /* Start the CCA, wait till done, return result */
   /* Note reading the TRX_STATUS register clears both CCA_STATUS and CCA_DONE bits */
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
 #if 1  //interrupt method
     sei();
 //rf212_waitidle();
@@ -1642,7 +1642,7 @@ rf212_cca(void)
 //  if (hal_register_read(RG_PHY_ED_LEVEL)<(91-77)) cca=0xff;
     while (rf212_ccawait) {}
 #ifdef RF212_CONF_CCA_THRES
-    if (hal_register_read(RG_PHY_ED_LEVEL)<(91+RF212_CONF_CCA_THRES) cca=0xff;
+    if (hal_register_read(RG_PHY_ED_LEVEL)<(91+RF212_CONF_CCA_THRES)) cca=0xff;
 #else
     if (hal_register_read(RG_PHY_ED_LEVEL)<(91-77)) cca=0xff;
 #endif

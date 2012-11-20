@@ -86,6 +86,8 @@
 #define MX2XXCB			101
 #define MX2XXCC			102
 
+#define IDUINO			200
+
 #if PLATFORM_TYPE == RCB_B
 /* 1281 rcb */
 #   define SSPORT     B

@@ -54,11 +54,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "hal.h"
-#if defined(__AVR_ATmega128RFA1__)
-#include "atmega128rfa1_registermap.h"
-#else
 #include "at86rf212_registermap.h"
-#endif
+
 
 
 /*============================ MACROS ========================================*/
@@ -67,15 +64,13 @@
 #define RF212_REVB                              ( 2 )
 #define SUPPORTED_MANUFACTURER_ID               ( 31 )
 
-#if defined(__AVR_ATmega128RFA1__)
-#define RF212_SUPPORTED_INTERRUPT_MASK          ( 0xFF )
-#else
+
 /* RF212 does not support RX_START interrupts in extended mode, but it seems harmless to always enable it. */
 /* In non-extended mode this allows RX_START to sample the RF rssi at the end of the preamble */
 //#define RF212_SUPPORTED_INTERRUPT_MASK        ( 0x08 )  //enable trx end only
 //#define RF212_SUPPORTED_INTERRUPT_MASK          ( 0x0F ) //disable bat low, trx underrun
 #define RF212_SUPPORTED_INTERRUPT_MASK          ( HAL_TRX_END_MASK | HAL_RX_START_MASK | HAL_BAT_LOW_MASK | HAL_AMI_MASK ) //( 0x0C )  //disable bat low, trx underrun, pll lock/unlock
-#endif
+
 
 #define RF212_MIN_CHANNEL                       ( 0 )
 #define RF212_MAX_CHANNEL                       ( 3 )

@@ -171,12 +171,22 @@
 #   define HAS_CW_MODE
 #   define HAS_SPARE_TIMER
 
-#elif PLATFORM_TYPE == ATMEGA128RFA1
-/* ATmega1281 with internal AT86RF231 radio */
-#   define SLPTRPORT  TRXPR
-#   define SLPTRPIN   1
-#   define USART      1
-#   define USARTVECT  USART1_RX_vect
+#elif 1//PLATFORM_TYPE == ATMEGA128RFA1
+/* ATmega1281 with  AT86RF212 radio */
+#   define SSPORT     B
+#   define SSPIN      (0x00)
+#   define SPIPORT    B
+#   define MOSIPIN    (0x02)
+#   define MISOPIN    (0x03)
+#   define SCKPIN     (0x01)
+#   define RSTPORT    G
+#   define RSTPIN     (0x01)
+#   define IRQPORT    D
+#   define IRQPIN     (0x04)
+#   define SLPTRPORT  G
+#   define SLPTRPIN   (0x00)
+//#   define TXCWPORT   B
+//#   define TXCWPIN    (0x07)
 #   define TICKTIMER  3
 #   define HAS_CW_MODE
 #   define HAS_SPARE_TIMER
@@ -322,16 +332,7 @@
  *       that the source code can directly use.
  * \{
  */
-#if defined(__AVR_ATmega128RFA1__)
 
-#define hal_set_rst_low( )    ( TRXPR &= ~( 1 << TRXRST ) ) /**< This macro pulls the RST pin low. */
-#define hal_set_rst_high( )   ( TRXPR |= ( 1 << TRXRST ) ) /**< This macro pulls the RST pin high. */
-#define hal_set_slptr_high( ) ( TRXPR |= ( 1 << SLPTR ) )      /**< This macro pulls the SLP_TR pin high. */
-#define hal_set_slptr_low( )  ( TRXPR &= ~( 1 << SLPTR ) )     /**< This macro pulls the SLP_TR pin low. */
-//#define hal_get_slptr( ) (    ( TRXPR & ( 1 << SLPTR ) ) >> SLPTR )  /**< Read current state of the SLP_TR pin (High/Low). */
-#define hal_get_slptr( )      ( TRXPR & ( 1 << SLPTR ) )  /**< Read current state of the SLP_TR pin (High/Low). */
-
-#else
 #define SLP_TR                SLPTRPIN            /**< Pin number that corresponds to the SLP_TR pin. */
 #define DDR_SLP_TR            DDR( SLPTRPORT )    /**< Data Direction Register that corresponds to the port where SLP_TR is connected. */
 #define PORT_SLP_TR           PORT( SLPTRPORT )   /**< Port (Write Access) where SLP_TR is connected. */
@@ -365,7 +366,7 @@
 #define HAL_DD_SCK            SCKPIN              /**< Data Direction bit for SCK. */
 #define HAL_DD_MOSI           MOSIPIN             /**< Data Direction bit for MOSI. */
 #define HAL_DD_MISO           MISOPIN             /**< Data Direction bit for MISO. */
-#endif /* defined(__AVR_ATmega128RFA1__) */
+
 
 /** \} */
 
@@ -385,6 +386,11 @@
     #define HAL_TCCR1B_CONFIG ( ( 1 << ICES1 ) | ( 1 << CS12 ) )
     #define HAL_US_PER_SYMBOL ( 1 )
     #define HAL_SYMBOL_MASK   ( 0xFFFFffff )
+
+    /*#define HAL_TCCR1B_CONFIG ( ( 1 << ICES1 ) | ( 1 << CS11 ) | ( 1 << CS10 ) )
+    #define HAL_US_PER_SYMBOL ( 2 )
+    #define HAL_SYMBOL_MASK   ( 0x7FFFffff )
+    */
 #elif ( F_CPU == 0x800000UL )
     #define HAL_TCCR1B_CONFIG ( ( 1 << ICES1 ) | ( 1 << CS11 ) | ( 1 << CS10 ) )
     #define HAL_US_PER_SYMBOL ( 2 )
@@ -516,26 +522,13 @@ void hal_clear_rx_start_event_handler( void );
 uint8_t hal_get_pll_lock_flag( void );
 void hal_clear_pll_lock_flag( void );
 
-/* Hack for atmega128rfa1 with integrated radio. Access registers directly, not through SPI */
-#if defined(__AVR_ATmega128RFA1__)
-//#define hal_register_read(address) _SFR_MEM8((uint16_t)address)
-#define hal_register_read(address) address
-uint8_t hal_subregister_read( uint16_t address, uint8_t mask, uint8_t position );
-void hal_subregister_write( uint16_t address, uint8_t mask, uint8_t position,
-                            uint8_t value );
 
-//#define hal_register_write(address, value) _SFR_MEM8((uint16_t)address)=value
-#define hal_register_write(address, value) address=value
-//#define hal_subregister_read( address, mask, position ) (_SFR_MEM8((uint16_t)address)&mask)>>position
-//#define hal_subregister_read1( address, mask, position ) (address&mask)>>position
-//#define hal_subregister_write( address, mask, position, value ) address=(address<<position)&mask
-#else
 uint8_t hal_register_read( uint8_t address );
 void hal_register_write( uint8_t address, uint8_t value );
 uint8_t hal_subregister_read( uint8_t address, uint8_t mask, uint8_t position );
 void hal_subregister_write( uint8_t address, uint8_t mask, uint8_t position,
                             uint8_t value );
-#endif
+
 
 
 

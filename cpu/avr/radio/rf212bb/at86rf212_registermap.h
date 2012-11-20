@@ -57,6 +57,23 @@
 #define SR_reserved_01_3             0x01, 0x20, 5
 /** Access parameters for sub-register TRX_STATUS in register @ref RG_TRX_STATUS */
 #define SR_TRX_STATUS                0x01, 0x1f, 0
+
+#undef P_ON
+#undef BUSY_RX
+#undef BUSY_TX
+#undef RX_ON
+#undef TRX_OFF
+#undef PLL_ON
+#undef SLEEP
+#undef BUSY_RX_AACK
+#undef BUSY_TX_ARET
+#undef RX_AACK_ON
+#undef TX_ARET_ON
+#undef RX_ON_NOCLK
+#undef RX_AACK_ON_NOCLK
+#undef BUSY_RX_AACK_NOCLK
+#undef STATE_TRANSITION
+
 /** Constant P_ON for sub-register @ref SR_TRX_STATUS */
 #define P_ON                     (0)
 /** Constant BUSY_RX for sub-register @ref SR_TRX_STATUS */
@@ -93,6 +110,18 @@
 #define SR_TRAC_STATUS               0x02, 0xe0, 5
 /** Access parameters for sub-register TRX_CMD in register @ref RG_TRX_STATE */
 #define SR_TRX_CMD                   0x02, 0x1f, 0
+
+
+#undef CMD_NOP
+#undef CMD_TX_START
+#undef CMD_FORCE_TRX_OFF
+#undef CMD_FORCE_PLL_ON
+#undef CMD_RX_ON
+#undef CMD_TRX_OFF
+#undef CMD_PLL_ON
+#undef CMD_RX_AACK_ON
+#undef CMD_TX_ARET_ON
+
 /** Constant CMD_NOP for sub-register @ref SR_TRX_CMD */
 #define CMD_NOP                  (0)
 /** Constant CMD_TX_START for sub-register @ref SR_TRX_CMD */
@@ -149,7 +178,8 @@
 #define SR_TX_AUTO_CRC_ON            0x04, 0x20, 5
 //#define SR_reserved_05_2             0x05, 0x70, 4
 /** Access parameters for sub-register TX_PWR in register @ref RG_PHY_TX_PWR */
-#define SR_TX_PWR                    0x05, 0x0f, 0
+//#define SR_TX_PWR                    0x05, 0x0f, 0
+#define SR_TX_PWR                    0x05, 0xff, 0 //for china
 /** Offset for register PHY_RSSI */
 #define RG_PHY_RSSI                      (0x06)
 /** Access parameters for sub-register RND_VALUE in register @ref RG_PHY_RSSI */
@@ -381,6 +411,8 @@
 #define SR_CSMA_SEED_1               0x2e, 0x07, 0
 
 /*AES SRAM Registers */
+#undef AES_STATUS
+#undef AES_CTRL
 #define AES_STATUS		0x82
 #define AES_CTRL		0x83
 #define AES_KEY_START	0x84

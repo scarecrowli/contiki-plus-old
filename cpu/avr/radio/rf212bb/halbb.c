@@ -122,7 +122,7 @@ volatile extern signed char rf212_last_rssi;
 //static hal_trx_end_isr_event_handler_t trx_end_callback;
 
 /*============================ IMPLEMENTATION ================================*/
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__)
 //#include <avr/io.h>
 #include <avr/interrupt.h>
 /* AVR1281 with internal RF231 radio */
@@ -202,7 +202,7 @@ inline uint8_t spiWrite(uint8_t byte)
  
 /** \brief  This function initializes the Hardware Abstraction Layer.
  */
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__)
 //#define HAL_RF212_ISR() ISR(RADIO_VECT)
 #define HAL_TIME_ISR()  ISR(TIMER1_OVF_vect)
 #define HAL_TICK_UPCNT() (TCNT1)
@@ -245,7 +245,9 @@ hal_init(void)
     /* Run SPI at max speed */
     SPCR         = (1 << SPE) | (1 << MSTR); /* Enable SPI module and master operation. */
     SPSR         = (1 << SPI2X); /* Enable doubled SPI speed in master mode. */
-
+#if ( F_CPU == 16000000UL )
+    SPCR |= _BV(SPR1) | _BV(SPR0) ;
+#endif
     /*TIMER1 Specific Initialization.*/
     TCCR1B = HAL_TCCR1B_CONFIG;       /* Set clock prescaler */
     TIFR1 |= (1 << ICF1);             /* Clear Input Capture Flag. */
@@ -431,7 +433,7 @@ hal_init(void)
 //    HAL_LEAVE_CRITICAL_REGION();
 //}
 
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
 /* Hack for internal radio registers. hal_register_read and hal_register_write are
    handled through defines, but the preprocesser can't parse a macro containing
    another #define with multiple arguments, e.g. using
@@ -586,7 +588,7 @@ hal_subregister_write(uint8_t address, uint8_t mask, uint8_t position,
 void
 hal_frame_read(hal_rx_frame_t *rx_frame)
 {
-#if defined(__AVR_ATmega128RFA1__)
+#if 0// defined(__AVR_ATmega128RFA1__) &&0
 
     uint8_t frame_length,*rx_data,*rx_buffer;
  
@@ -677,7 +679,7 @@ hal_frame_read(hal_rx_frame_t *rx_frame)
 void
 hal_frame_write(uint8_t *write_buffer, uint8_t length)
 {
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
     uint8_t *tx_buffer;
     tx_buffer=(uint8_t *)0x180;  //start of fifo in i/o space
     /* Write frame length, including the two byte checksum */
@@ -807,7 +809,7 @@ volatile char rf212interruptflag;
 #define INTERRUPTDEBUG(arg)
 #endif
 
-#if defined(__AVR_ATmega128RFA1__)
+#if 0//defined(__AVR_ATmega128RFA1__) &&0
 /* The atmega128rfa1 has individual interrupts for the integrated radio'
  * Whichever are enabled by the RF212 driver must be present even if not used!
  */
